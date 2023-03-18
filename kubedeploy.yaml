@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bhagyashreehealthcare-deploy
+  labels:
+    app: bhagyashree-healthcare-app
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: bhagyashree-healthcare-app
+  template:
+    metadata:
+      labels:
+        app: bhagyashree-healthcare-app
+    spec:
+      containers:
+      - name: bhagyashree-healthcare-container
+        image: bhagyashreebaddoli/bhagyashreedevopshealth:latest
+        ports:
+        - containerPort: 8082
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: bhagyashree-np2-service
+  labels:
+    app: bhagyashree-healthcare-app
+spec:
+  selector:
+    app: bhagyashree-healthcare-app
+
+  type: NodePort
+  ports:
+  - nodePort: 31000
+    port: 8082
+    targetPort: 8082
